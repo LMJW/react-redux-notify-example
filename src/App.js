@@ -1,26 +1,25 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { Provider } from 'react-redux';
+import ExampleNotifications from './components/ExampleNotifications';
+import { createStore, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import thunkMiddleware from 'redux-thunk';
+import { createLogger } from 'redux-logger';
+import 'react-redux-notify/dist/ReactReduxNotify.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import rootReducer from './store/reducer';
+
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunkMiddleware, createLogger())));
+
+class App extends React.Component {
+	render() {
+		return (
+			<Provider store={store}>
+				<ExampleNotifications />
+			</Provider>
+		);
+	}
 }
 
 export default App;
